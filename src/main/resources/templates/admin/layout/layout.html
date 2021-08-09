@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html
+        xmlns:th      = "http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Backstage Management</title>
+  <link rel="stylesheet" th:href="@{/webjars/Semantic-UI/2.4.1/semantic.css}">
+  <link rel="stylesheet" th:href="@{/css/admin/admin.css}">
+</head>
+<body>
+<div class="ui fixed inverted teal menu admin-menu">
+  <div class="ui container">
+    <a href="{{route('books.index')}}" class="header item title">
+      <span class="menu-main-title">BackStage Admin</span>
+    </a>
+    <div class="ui secondary menu">
+      <a class="item @isset($active_book){{ $active_book }}@endisset" th:href="@{/admin/book}">書籍管理</a>
+      <a class="item @isset($active_place){{ $active_place }}@endisset" href="{{route('places.index')}}">保管場所管理</a>
+      <a class="item @isset($active_employee){{ $active_employee }}@endisset" th:href="@{/admin/employee}">使用者管理</a>
+    </div>
+    <div class="right menu">
+<!--      <a class="ui item">-->
+<!--      Logout-->
+<!--      </a>-->
+    </div>
+  </div>
+</div>
+<!--Content-->
+<div class="m-padded-tb-large m-container-small main-content">
+  <th:block layout:fragment="layout-content">
+    <p>Default layout content</p>
+  </th:block>
+</div>
+<th:block th:fragment="script">
+  <script th:src="@{/webjars/jquery/3.6.0/jquery.js}"></script>
+  <script th:src="@{/webjars/Semantic-UI/2.4.1/semantic.js}"></script>
+  <script th:src="@{/js/admin.js}"></script>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{admin/layout/layout}">
+<head>
+  <!-- layoutに設定しているタグで一致しているものを入れ替えることができる   -->
+  <title>書籍管理 - 書籍編集</title>
+</head>
+<th:block layout:fragment="layout-content">
+  <div class="ui container">
+    <div class="content-top">
+      <h3>書籍管理 - 書籍編集</h3>
+      <div class="ui segment">
+        <form class="ui form new-entry-form" method="POST" th:action="@{/admin/book/edit}" th:object="${bookForm}">
+          <h4 class="ui dividing header">編集する書籍</h4>
+          <div class="ui error message" th:style="${#fields.hasAnyErrors()} ? 'display:block' : ''">
+            <i class="close icon"></i>
+            <div class="header">
+              入力エラーがあります。
+              <ul class="list">
+                <li th:each="error : ${#fields.detailedErrors()}">
+                  <span th:text="${error.message}">Error message</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="field">
+            <label>名前</label>
+            <div class="two fields">
+              <div th:class="${#fields.hasErrors('name')} ? 'field error' : 'field'">
+                <input type="text" placeholder="名前" th:field="*{name}">
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="ui pointing red basic label">
+                  message
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>詳細</label>
+            <div th:class="${#fields.hasErrors('description')} ? 'field error' : 'field'">
+              <textarea name="description" rows="2" th:field="*{description}"></textarea>
+              <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="ui pointing red basic label">
+                message
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>保管場所</label>
+            <div class="two fields">
+              <div th:class="${#fields.hasErrors('placeId')} ? 'field error' : 'field'">
+                <select th:field="*{placeId}" class="ui fluid dropdown">
+                  <option value="0"></option>
+                  <th:block th:each="place : ${placeList}">
+                    <option th:value="${place.id}" th:text="${place.name}"></option>
+                  </th:block>
+                </select>
+                <div th:if="${#fields.hasErrors('placeId')}" th:errors="*{placeId}" class="ui pointing red basic label">
+                  message
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>使用者</label>
+            <div class="two fields">
+              <div th:class="${#fields.hasErrors('employeeId')} ? 'field error' : 'field'">
+                <select class="ui fluid dropdown" th:field="*{employeeId}">
+                  <option value=""></option>
+                  <th:block th:each="employee : ${employeeList}">
+                    <option th:value="${employee.id}" th:text="${employee.name}"></option>
+                  </th:block>
+                </select>
+                <div th:if="${#fields.hasErrors('employeeId')}" th:errors="*{employeeId}" class="ui pointing red basic label">
+                  message
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>サムネイル</label>
+            <div class="ui three column grid">
+              <div class="column top aligned content">
+                <input type="file" name="thumbnail_file" accept="image/*" placeholder="サムネイル" >
+                <input type="hidden" th:field="*{thumbnail}">
+                <div th:if="${#fields.hasErrors('thumbnail')}" th:errors="*{thumbnail}" class="ui pointing red basic label">
+                  message
+                </div>
+                <div class="ui segment thumbnail-area">
+                  <img class="ui middle aligned tiny image thumbnail-img" th:src="@{/image/no-image.png}" alt="サムネイル">
+                </div>
+                <a class="ui button mini green thumbnail-add" tabindex="0" >追加</a>
+                <a class="ui button mini orange thumbnail-clear disabled" tabindex="0" >クリア</a>
+              </div>
+            </div>
+          </div>
+          <div class="ui divider"></div>
+          <div class="ui container button-group">
+            <button class="ui button green edit-entry-save" tabindex="0">編集</button>
+            <a class="ui button" tabindex="0" th:href="@{/admin/book}">戻る</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</th:block>
+</html>

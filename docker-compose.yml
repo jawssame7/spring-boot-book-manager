@@ -1,0 +1,37 @@
+version: '3.6'
+
+services:
+  app:
+    image: openjdk:11
+    ports:
+      - '9000:8080'
+    tty: true
+    volumes:
+      - ./:/srv:cached
+    working_dir: /srv
+    networks:
+      - boot
+    depends_on:
+      - mysql
+  mysql:
+    image: 'mysql:8.0'
+    ports:
+      - '3306:3306'
+    env_file: ./docker/.env
+#    restart: always
+    volumes:
+      - ./docker/mysqldata:/var/lib/mysql
+      - ./docker/my.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+      - boot
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+      retries: 3
+      timeout: 5s
+    command: --default-authentication-plugin=mysql_native_password
+networks:
+  boot:
+    driver: bridge
+volumes:
+  mysqldata:
+    driver: local

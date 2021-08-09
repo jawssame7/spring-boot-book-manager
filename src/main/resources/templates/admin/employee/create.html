@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{admin/layout/layout}">
+<head>
+  <!-- layoutに設定しているタグで一致しているものを入れ替えることができる   -->
+  <title>保管者管理 - 保管者作成</title>
+</head>
+<th:block layout:fragment="layout-content">
+  <div class="ui container">
+    <div class="content-top">
+      <h3>使用者管理 - 保管者作成</h3>
+      <div class="ui segment">
+        <form class="ui form new-entry-form" method="POST" th:action="@{/admin/employee/create}" th:object="${employeeForm}">
+          <h4 class="ui dividing header">登録するユーザー</h4>
+          <div class="ui error message" th:style="${#fields.hasAnyErrors()} ? 'display:block' : ''">
+            <i class="close icon"></i>
+            <div class="header">
+              入力エラーがあります。
+              <ul class="list">
+                <li th:each="error : ${#fields.detailedErrors()}">
+                  <span th:text="${error.message}">Error message</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="field">
+            <label>名前</label>
+            <div class="two fields">
+              <div th:class="${#fields.hasErrors('name')} ? 'field error' : 'field'">
+                <input type="text" th:field="*{name}"  placeholder="名前">
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="ui pointing red basic label">
+                  message
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>メールアドレス</label>
+            <div class="two fields">
+              <div th:class="${#fields.hasErrors('email')} ? 'field error' : 'field'">
+                <input type="text" th:field="*{email}" placeholder="メールアドレス" >
+                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="ui pointing red basic label">
+                  message
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui divider"></div>
+          <div class="ui container button-group">
+            <button class="ui button green new-entry-save" tabindex="0">新規作成</button>
+            <a class="ui button" tabindex="0" th:href="@{/admin/employee}">戻る</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</th:block>
+</html>
