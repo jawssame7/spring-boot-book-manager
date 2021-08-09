@@ -10,9 +10,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 import static com.wiz.bookmanager.specification.admin.BookSpecifications.*;
 
 @Service
+@Transactional
 public class BookServiceImpl implements BookService {
 
     /**
