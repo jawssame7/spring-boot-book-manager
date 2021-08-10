@@ -13,13 +13,13 @@
 <body>
 <div class="ui fixed inverted teal menu admin-menu">
   <div class="ui container">
-    <a href="{{route('books.index')}}" class="header item title">
+    <a th:href="@{/admin/book}" class="header item title">
       <span class="menu-main-title">BackStage Admin</span>
     </a>
     <div class="ui secondary menu">
-      <a class="item @isset($active_book){{ $active_book }}@endisset" th:href="@{/admin/book}">書籍管理</a>
-      <a class="item @isset($active_place){{ $active_place }}@endisset" href="{{route('places.index')}}">保管場所管理</a>
-      <a class="item @isset($active_employee){{ $active_employee }}@endisset" th:href="@{/admin/employee}">使用者管理</a>
+      <a class="item" th:href="@{/admin/book}">書籍管理</a>
+      <a class="item"  th:href="@{/admin/place}">保管場所管理</a>
+      <a class="item" th:href="@{/admin/employee}">使用者管理</a>
     </div>
     <div class="right menu">
 <!--      <a class="ui item">-->
@@ -32,6 +32,12 @@
 <div class="m-padded-tb-large m-container-small main-content">
   <th:block layout:fragment="layout-content">
     <p>Default layout content</p>
+  </th:block>
+  <!-- ajax success modal -->
+  <th:block th:replace="admin/components/common/ajax_success_modal :: ajax_success_modal">
+  </th:block>
+  <!-- ajax error modal -->
+  <th:block th:replace="admin/components/common/ajax_err_modal :: ajax-err-modal">
   </th:block>
 </div>
 <th:block th:fragment="script">

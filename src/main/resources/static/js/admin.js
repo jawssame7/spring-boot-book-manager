@@ -49,7 +49,7 @@ $(function () {
                         $method = $el.find('input[name=_method]');
 
                     if (mode === 'edit') {
-                        $form.attr('action', '/admin/places/' + id);
+                        $form.attr('action', '/admin/place/' + id + '/edit');
                         $method.val('PUT');
                         $id.val(id);
                     }
@@ -123,11 +123,87 @@ $(function () {
     // 保管場所 新規作成・編集 OKボタン
     $('div.button.place-create-edit-ok-btn').click(function () {
         var el = this,
-            $form = $('.place-create-edit-form');
+            $modal = $('.ui.create-modal.edit-modal'),
+            $form = $('.place-create-edit-form'),
+            data = {},
+            action,
+            formData;
 
-        if ($form) {
-            $form.submit();
-        }
+        action = $form.attr('action');
+        // フォームのデータを取得
+        formData = $form.serializeArray();
+
+        // [{id="11"},{name: "名前"}] みたいな形を
+        // {id="11", name: "名前"} に変換
+        $(formData).each(function(index, obj){
+            data[obj.name] = obj.value;
+        });
+
+        // ajax
+        $.ajax({
+            type: 'post',
+            url : action,
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            cache : false,
+            data: JSON.stringify(data)
+        })
+        .done(function (res) {
+            var errors;
+            if (res.success) {
+                var $successModal =$('.ui.ajax-success-modal'),
+                    $message;
+
+                if ($successModal.length) {
+                    $message = $successModal.find('.message');
+                    $message.text(res.message);
+
+                    $successModal.modal({
+                        onHide: function () {
+                            location.reload();
+                        }
+                    }).modal('show');
+                }
+
+            } else {
+                errors = res.errors;
+
+                $.each(errors, function (key, val) {
+                    var $field = $form.find('.field.' + key),
+                        $pointLbl = $form.find('.ui.pointing.red.basic.label.' + key);
+                    if ($field.length) {
+                        $field.addClass('error');
+                    }
+
+                    $pointLbl.text(val);
+                    $pointLbl.removeClass('hidden');
+                });
+
+
+            }
+        })
+        .fail(function (res) {
+            // エラーメッセージモーダル
+            var json = res.responseJSON,
+                $errModal = $('.ui.ajax-err-modal'),
+                $message;
+
+            if ($errModal.length) {
+                $message = $errModal.find('.message');
+                $message.text(json.message);
+
+                $errModal.modal({
+                    onHide: function () {
+                        location.reload();
+                    }
+                }).modal('show');
+            }
+
+        })
+        .always(() => {
+            $modal.modal('hide');
+        });
+
         return false;
     });
 
@@ -272,10 +348,11 @@ function placeModalReset(el) {
         $name = $el.find('input[name=name]'),
         $method = $el.find('input[name=_method]');
 
-    $errLabel.hide();
+    $errLabel.text('');
+    $errLabel.addClass('hidden');
     $feild.removeClass('error');
 
-    $form.attr('action', '/admin/places');
+    $form.attr('action', '/admin/place/create');
     $id.val('');
     $name.val('');
     $method.val('POST');

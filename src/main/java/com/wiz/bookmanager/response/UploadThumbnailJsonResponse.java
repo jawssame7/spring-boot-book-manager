@@ -3,7 +3,7 @@ package com.wiz.bookmanager.response;
 import lombok.Data;
 
 @Data
-public class UploadThumbnail {
+public class UploadThumbnailJsonResponse {
 
     private Boolean success;
 

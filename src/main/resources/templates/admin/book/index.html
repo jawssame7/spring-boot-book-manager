@@ -59,8 +59,8 @@
               <td th:text="${book.name}">name</td>
               <td th:text="${book.name}">name</td>
               <td>
-                <img th:if="${book.thumbnail}" th:src="@{/public/thumbnails/} + ${book.thumbnail}" alt="サムネイル">
-                <img th:if="!${book.thumbnail}" th:src="@{/image/no-image.png}" alt="サムネイル">
+                <img th:if="!${#strings.isEmpty(book.thumbnail)}" th:src="@{/public/thumbnails/} + ${book.thumbnail}" alt="サムネイル">
+                <img th:if="${#strings.isEmpty(book.thumbnail)}" th:src="@{/image/no-image.png}" alt="サムネイル">
               </td>
               <td th:text="${book.description}">description</td>
               <td>
@@ -75,7 +75,7 @@
             </tbody>
           </table>
           <div class="container ui center aligned">
-            <div class="ui pagination menu">
+            <div th:if="${page.totalPages} > 1" class="ui pagination menu">
               <!--     paging         -->
               <th:block th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
                 <!--  hrefにリクエストパラメータを付与 -->

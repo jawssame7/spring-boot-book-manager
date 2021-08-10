@@ -7,6 +7,9 @@ import com.wiz.bookmanager.model.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+/**
+ * 書籍 サービス
+ */
 public interface BookService {
 
     /**

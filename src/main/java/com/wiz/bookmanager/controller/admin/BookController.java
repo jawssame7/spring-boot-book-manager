@@ -2,11 +2,10 @@ package com.wiz.bookmanager.controller.admin;
 
 import com.wiz.bookmanager.form.BookForm;
 import com.wiz.bookmanager.form.BookSearchForm;
-import com.wiz.bookmanager.form.EmployeeForm;
 import com.wiz.bookmanager.model.Book;
 import com.wiz.bookmanager.model.Employee;
 import com.wiz.bookmanager.model.Place;
-import com.wiz.bookmanager.response.UploadThumbnail;
+import com.wiz.bookmanager.response.UploadThumbnailJsonResponse;
 import com.wiz.bookmanager.service.admin.BookService;
 import com.wiz.bookmanager.service.admin.EmployeeService;
 import com.wiz.bookmanager.service.admin.PlaceService;
@@ -115,8 +114,8 @@ public class BookController {
      */
     @PostMapping("/book/uploadThumbnail")
     @ResponseBody
-    public UploadThumbnail uploadThumbnail(@RequestParam("file") final MultipartFile uploadFile) {
-        UploadThumbnail thumbnail = new UploadThumbnail();
+    public UploadThumbnailJsonResponse uploadThumbnail(@RequestParam("file") final MultipartFile uploadFile) {
+        UploadThumbnailJsonResponse thumbnail = new UploadThumbnailJsonResponse();
         if (uploadFile.isEmpty()) {
             thumbnail.setSuccess(false);
             thumbnail.setMessage("ファイルがありません");

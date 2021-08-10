@@ -3,10 +3,10 @@ package com.wiz.bookmanager.form;
 import lombok.Data;
 
 /**
- * 書籍 検索 フォーム
+ * 保管場所 検索 フォーム
  */
 @Data
-public class BookSearchForm {
+public class PlaceSearchForm {
 
     /**
      * 名前

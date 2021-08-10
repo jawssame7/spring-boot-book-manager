@@ -87,10 +87,11 @@
                   message
                 </div>
                 <div class="ui segment thumbnail-area">
-                  <img class="ui middle aligned tiny image thumbnail-img" th:src="@{/image/no-image.png}" alt="サムネイル">
+                  <img th:if="${#strings.isEmpty(bookForm.thumbnail)}" class="ui middle aligned tiny image thumbnail-img" th:src="@{/image/no-image.png}" alt="サムネイル">
+                  <img th:if="!${#strings.isEmpty(bookForm.thumbnail)}" class="ui middle aligned tiny image thumbnail-img" th:src="@{/public/thumbnails/} + *{thumbnail}" alt="サムネイル">
                 </div>
                 <a class="ui button mini green thumbnail-add" tabindex="0" >追加</a>
-                <a class="ui button mini orange thumbnail-clear disabled" tabindex="0" >クリア</a>
+                <a th:class="${#strings.isEmpty(bookForm.thumbnail)} ? 'ui button mini orange thumbnail-clear disabled' : 'ui button mini orange thumbnail-clear '" tabindex="0" >クリア</a>
               </div>
             </div>
           </div>

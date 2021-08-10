@@ -5,7 +5,7 @@
         layout:decorate="~{admin/layout/layout}">
 <head>
   <!-- layoutに設定しているタグで一致しているものを入れ替えることができる   -->
-  <title>保管者管理 - 保管者一覧</title>
+  <title>保管場所管理 - 保管場所一覧</title>
 </head>
 <th:block layout:fragment="layout-content">
   <div class="ui container">
@@ -15,7 +15,7 @@
       <p th:text="${message}">Congratulation! Operation successful！</p>
     </div>
     <div class="ui segment search-content">
-      <form class="ui form" th:action="@{/admin/employee/}" th:object="${employeeSearchForm}" method="GET">
+      <form class="ui form" th:action="@{/admin/place/}" th:object="${placeSearchForm}" method="GET">
         <h4 class="ui dividing header">検索条件</h4>
         <div class="field">
           <label>名前</label>
@@ -39,26 +39,23 @@
     <div class="list-content">
       <div class="ui segment">
         <div class="container ui right aligned">
-          <button class="ui button green new-entry" tabindex="0">新規作成</button>
+          <button class="ui button green new-entry-place" tabindex="0">新規作成</button>
         </div>
         <table class="ui striped table">
           <thead>
           <tr>
             <th class="name">名前</th>
-            <th>メールアドレス</th>
             <th class="action">アクション</th>
           </tr>
           </thead>
           <tbody>
-          <!-- 一覧(iterator) ModelAndView(Model)でaddObjectしたキー名で取り出す 下記の場合: books -->
-          <tr th:each="employee : ${employees}">
-            <td th:text="${employee.name}">name</td>
-            <td th:text="${employee.email}">email</td>
+          <tr th:each="place : ${places}">
+            <td th:text="${place.name}">name</td>
             <td>
-              <button class="ui button orange edit-entry" th:data-id="${employee.id}" tabindex="0">
+              <button class="ui button orange edit-entry-place" th:data-id="${place.id}" th:data-name="${place.name}" data-mode="edit" tabindex="0">
                 編集
               </button>
-              <button class="ui button delete-entry" th:data-id="${employee.id}" th:data-url="@{/admin/employee/} +  ${employee.id} + '/delete'" tabindex="0">
+              <button class="ui button delete-entry" th:data-id="${place.id}" th:data-url="@{/admin/place/} +  ${place.id} + '/delete'" tabindex="0">
                 削除
               </button>
             </td>
@@ -67,12 +64,12 @@
         </table>
         <div class="container ui center aligned">
           <div th:if="${page.totalPages} > 1" class="ui pagination menu">
-            <!-- employeeSearchForm  -->
-            <th:block th:object="${employeeSearchForm}">
+            <!-- placeSearchForm  -->
+            <th:block th:object="${placeSearchForm}">
               <!--     paging         -->
               <th:block th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
                 <!--  hrefにリクエストパラメータを付与 -->
-                <a th:class="${i}==${page.number} ? 'disabled item' : 'active item'" th:href="@{/admin/book(page=(${i}), name=(*{name}), includeDeleted=(*{includeDeleted}))}" th:style="${i}==${page.number} ? 'pointer-events: none;' : ''" th:text="${i + 1}">
+                <a th:class="${i}==${page.number} ? 'disabled item' : 'active item'" th:href="@{/admin/place(page=(${i}), name=(*{name}), includeDeleted=(*{includeDeleted}))}" th:style="${i}==${page.number} ? 'pointer-events: none;' : ''" th:text="${i + 1}">
                 </a>
               </th:block>
             </th:block>
@@ -83,6 +80,9 @@
   </div>
   <!-- modal include -->
   <th:block th:replace="admin/components/common/delete_modal :: common_delete_modal">
+  </th:block>
+  <!-- modal -->
+  <th:block th:replace="admin/components/place/create_edit_modal :: place_create_edit_modal">
   </th:block>
 </th:block>
 </html>

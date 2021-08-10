@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div class="ui mini modal transition create-modal edit-modal" th:fragment="place_create_edit_modal">
+  <div class="header">
+    保管場所の登録
+  </div>
+  <div class="content">
+    <h5>登録する保管場所</h5>
+    <form method="POST" th:action="@{/admin/place/create}" th:object="${placeForm}" class="ui form place-create-edit-form">
+      <input type="hidden" name="id">
+      <div class="field">
+        <label>名前</label>
+        <div class="field name">
+          <input type="text" placeholder="名前" th:field="*{name}">
+          <div class="ui pointing red basic label hidden name">
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="actions">
+    <div class="ui negative button">
+      キャンセル
+    </div>
+    <div class="ui positive right labeled icon button place-create-edit-ok-btn">
+      OK
+      <i class="checkmark icon"></i>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+    // $(function () {
+    //     {{--  エラーメッセージがあったときモーダル表示  --}}
+    //     $('.mini.modal.create-modal')
+    //         .modal({
+    //             onHide: function () {
+    //                 // リセット処理
+    //                 placeModalReset(this);
+    //             }
+    //         }).modal('show');
+    // });
+</script>
+
