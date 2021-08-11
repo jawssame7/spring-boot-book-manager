@@ -15,13 +15,13 @@
         <p th:text="${message}">Congratulation! Operation successful！</p>
       </div>
       <div class="ui segment search-content">
-        <form class="ui form" action="{{ $books->url(1) }}">
+        <form class="ui form" th:action="@{/admin/book/}" th:object="${bookSearchForm}">
           <h4 class="ui dividing header">検索条件</h4>
           <div class="field">
             <label>名前</label>
             <div class="two fields">
               <div class="field">
-                <input type="text" name="name" placeholder="名前" >
+                <input type="text" th:field="*{name}" placeholder="名前" >
               </div>
             </div>
           </div>
@@ -29,7 +29,7 @@
             <label>削除済を含む</label>
             <div class="two fields">
               <div class="field">
-                <input type="checkbox" name="deleted_at">
+                <input type="checkbox" th:field="*{includeDeleted}">
               </div>
             </div>
           </div>
@@ -56,12 +56,13 @@
             <!-- 一覧(iterator) ModelAndView(Model)でaddObjectしたキー名で取り出す 下記の場合: books -->
             <tr th:each="book : ${books}">
               <td th:text="${book.name}">name</td>
-              <td th:text="${book.name}">name</td>
-              <td th:text="${book.name}">name</td>
               <td>
                 <img th:if="!${#strings.isEmpty(book.thumbnail)}" th:src="@{/public/thumbnails/} + ${book.thumbnail}" alt="サムネイル">
                 <img th:if="${#strings.isEmpty(book.thumbnail)}" th:src="@{/image/no-image.png}" alt="サムネイル">
               </td>
+              <!--  place の null 判定 -->
+              <td th:text="${book.place?.name}">name</td>
+              <td th:text="${book.employee?.name}">name</td>
               <td th:text="${book.description}">description</td>
               <td>
                 <button class="ui button orange edit-entry" th:data-id="${book.id}" tabindex="0">

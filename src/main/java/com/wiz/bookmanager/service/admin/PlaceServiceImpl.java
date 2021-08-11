@@ -1,5 +1,7 @@
 package com.wiz.bookmanager.service.admin;
 
+import com.wiz.bookmanager.exception.IdNotFoundException;
+import com.wiz.bookmanager.exception.NotFoundException;
 import com.wiz.bookmanager.form.PlaceForm;
 import com.wiz.bookmanager.form.PlaceSearchForm;
 import com.wiz.bookmanager.model.Place;
@@ -62,7 +64,13 @@ public class PlaceServiceImpl implements PlaceService {
      */
     @Override
     public PlaceForm getPlace(Long id) {
+        if (id == null) {
+            throw new IdNotFoundException("指定したidがありません。");
+        }
         Place place = placeRepository.getById(id);
+        if (place == null) {
+            throw new NotFoundException("対象のレコードが見つかりません。");
+        }
         PlaceForm placeForm = new PlaceForm();
 
         BeanUtils.copyProperties(place, placeForm);
@@ -79,6 +87,10 @@ public class PlaceServiceImpl implements PlaceService {
     public Place editPlace(PlaceForm placeForm) {
         Place place = new Place();
 
+        if (placeForm == null) {
+            throw new NotFoundException("対象のレコードが見つかりません。");
+        }
+
         BeanUtils.copyProperties(placeForm, place);
 
         return placeRepository.save(place);
@@ -92,7 +104,13 @@ public class PlaceServiceImpl implements PlaceService {
      */
     @Override
     public Place deletePlace(Long id) {
+        if (id == null) {
+            throw new IdNotFoundException("指定したidがありません。");
+        }
         Place place = placeRepository.getById(id);
+        if (place == null) {
+            throw new NotFoundException("対象のレコードが見つかりません。");
+        }
         place.addDeletedAt();
         return placeRepository.save(place);
     }

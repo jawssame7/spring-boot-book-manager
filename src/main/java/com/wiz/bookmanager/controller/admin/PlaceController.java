@@ -161,7 +161,7 @@ public class PlaceController {
      */
     @PostMapping("/place/{id}/delete")
     public ModelAndView delete(@PathVariable Long id, ModelAndView mav, RedirectAttributes attributes) {
-
+        id = null;
         Place place = placeService.deletePlace(id);
 
         if (place == null) {

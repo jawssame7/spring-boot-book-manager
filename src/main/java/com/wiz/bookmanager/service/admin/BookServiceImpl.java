@@ -1,4 +1,6 @@
 package com.wiz.bookmanager.service.admin;
+import com.wiz.bookmanager.exception.IdNotFoundException;
+import com.wiz.bookmanager.exception.NotFoundException;
 import com.wiz.bookmanager.form.BookForm;
 import com.wiz.bookmanager.form.BookSearchForm;
 import com.wiz.bookmanager.model.Book;
@@ -34,6 +36,17 @@ public class BookServiceImpl implements BookService {
     public Page<Book> getBooks(BookSearchForm bookSearchForm, Pageable pageable) {
         String name = bookSearchForm.getName();
         Boolean includeDeleted = bookSearchForm.getIncludeDeleted();
+
+        Page<Book> page = bookRepository.findAll(
+                Specification
+                        .where(nameContains(name))
+                        .and(deletedAtContains(includeDeleted)),
+                pageable);
+
+//        for (Book book: page.getContent()) {
+//
+//        }
+//        page.setContent();
         return bookRepository.findAll(
                                 Specification
                                         .where(nameContains(name))
@@ -63,7 +76,13 @@ public class BookServiceImpl implements BookService {
      */
     @Override
     public BookForm getBook(Long id) {
+        if (id == null) {
+            throw new IdNotFoundException("指定したidがありません。");
+        }
         Book book = bookRepository.getById(id);
+        if (book == null) {
+            throw new NotFoundException("対象のレコードが見つかりません。");
+        }
         BookForm bookForm = new BookForm();
 
         // 同じプロパティ同士で内容をコピー
@@ -80,6 +99,9 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book editBook(BookForm bookForm) {
         Book book = new Book();
+        if (bookForm == null) {
+            throw new NotFoundException("対象のレコードが見つかりません。");
+        }
         // 同じプロパティ同士で内容をコピー
         BeanUtils.copyProperties(bookForm, book);
         return bookRepository.save(book);
@@ -93,6 +115,9 @@ public class BookServiceImpl implements BookService {
      */
     @Override
     public Book deleteBook(Long id) {
+        if (id == null) {
+            throw new IdNotFoundException("指定したidがありません。");
+        }
         Book book = bookRepository.getById(id);
         book.addDeletedAt();
         return bookRepository.save(book);

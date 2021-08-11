@@ -1,5 +1,7 @@
 package com.wiz.bookmanager.service.admin;
 
+import com.wiz.bookmanager.exception.IdNotFoundException;
+import com.wiz.bookmanager.exception.NotFoundException;
 import com.wiz.bookmanager.form.EmployeeForm;
 import com.wiz.bookmanager.form.EmployeeSearchForm;
 import com.wiz.bookmanager.model.Employee;
@@ -64,7 +66,13 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public EmployeeForm getEmployee(Long id) {
+        if (id == null) {
+            throw new IdNotFoundException("指定したidがありません。");
+        }
         Employee employee = employeeRepository.getById(id);
+        if (employee == null) {
+            throw new NotFoundException("対象のレコードが見つかりません。");
+        }
         EmployeeForm employeeForm = new EmployeeForm();
 
         // 同じプロパティ同士で内容をコピー
@@ -81,6 +89,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee editEmployee(EmployeeForm employeeForm) {
         Employee employee = new Employee();
+        if (employeeForm == null) {
+            throw new NotFoundException("対象のレコードが見つかりません。");
+        }
         // 同じプロパティ同士で内容をコピー
         BeanUtils.copyProperties(employeeForm, employee);
 
@@ -94,7 +105,13 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public Employee deleteEmployee(Long id) {
+        if (id == null) {
+            throw new IdNotFoundException("指定したidがありません。");
+        }
         Employee employee = employeeRepository.getById(id);
+        if (employee == null) {
+            throw new NotFoundException("対象のレコードが見つかりません。");
+        }
         employee.addDeletedAt();
         return employeeRepository.save(employee);
     }

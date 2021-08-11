@@ -26,23 +26,25 @@ public class Book extends BaseModel {
      * サムネイル
      */
     private String thumbnail;
-//
-//    /**
-//     * 保管場所
-//     */
-//    private Long placeId;
-//
-//    /**
-//     * 使用者
-//     */
-//    private Long employeeId;
+
+    /**
+     * 保管場所
+     */
+    @Column(name = "place_id")
+    private Long placeId;
+
+    /**
+     * 使用者
+     */
+    @Column(name = "employee_id")
+    private Long employeeId;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "place_id")
+    @JoinColumn(name = "place_id", insertable = false, updatable = false)
     private Place place;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", insertable = false, updatable = false)
     private Employee employee;
 
     /**
@@ -109,37 +111,37 @@ public class Book extends BaseModel {
         this.thumbnail = thumbnail;
     }
 
-//    /**
-//     * 保管場所IDを設定する
-//     * @return 保管場所ID
-//     */
-//    public Long getPlaceId() {
-//        return placeId;
-//    }
-//
-//    /**
-//     * 保管場所IDを設定する
-//     * @param placeId　保管場所ID
-//     */
-//    public void setPlaceId(Long placeId) {
-//        this.placeId = placeId;
-//    }
-//
-//    /**
-//     * 使用者を返す
-//     * @return 使用者
-//     */
-//    public Long getEmployeeId() {
-//        return employeeId;
-//    }
-//
-//    /**
-//     * 使用者を設定する
-//     * @param employeeId　使用者
-//     */
-//    public void setEmployeeId(Long employeeId) {
-//        this.employeeId = employeeId;
-//    }
+    /**
+     * 保管場所IDを設定する
+     * @return 保管場所ID
+     */
+    public Long getPlaceId() {
+        return placeId;
+    }
+
+    /**
+     * 保管場所IDを設定する
+     * @param placeId　保管場所ID
+     */
+    public void setPlaceId(Long placeId) {
+        this.placeId = placeId;
+    }
+
+    /**
+     * 使用者を返す
+     * @return 使用者
+     */
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    /**
+     * 使用者を設定する
+     * @param employeeId　使用者
+     */
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
+    }
 
     /**
      * 保管場所を返す
